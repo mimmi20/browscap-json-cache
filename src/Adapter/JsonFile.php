@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 
@@ -37,10 +38,11 @@ use WurflCache\Utils\FileUtils;
  * Adapter to use Files for caching
  *
  * @category   WurflCache
- * @package    Adapter
+ *
  * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
+ *
  * @link       https://github.com/mimmi20/WurflCache/
  */
 class JsonFile extends AbstractAdapter
@@ -48,11 +50,11 @@ class JsonFile extends AbstractAdapter
     /**
      * @var array
      */
-    private $defaultParams = array(
+    private $defaultParams = [
         'dir'        => '/tmp',
         'expiration' => 0,
         'readonly'   => 'false',
-    );
+    ];
 
     /**
      * @var string
@@ -60,7 +62,7 @@ class JsonFile extends AbstractAdapter
     private $root;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $readonly = false;
 
@@ -89,8 +91,8 @@ class JsonFile extends AbstractAdapter
     /**
      * Get an item.
      *
-     * @param  string $cacheId
-     * @param  bool   $success
+     * @param string $cacheId
+     * @param bool   $success
      *
      * @return mixed Data on success, null on failure
      */
@@ -99,7 +101,7 @@ class JsonFile extends AbstractAdapter
         $success = false;
 
         if (!$this->hasItem($cacheId)) {
-            return null;
+            return;
         }
 
         $path = $this->keyPath($cacheId);
@@ -107,7 +109,7 @@ class JsonFile extends AbstractAdapter
         /** @var $value \WurflCache\Adapter\Helper\StorageObject */
         $value = json_decode(FileUtils::read($path));
         if ($value === null) {
-            return null;
+            return;
         }
 
         $success = true;
@@ -118,7 +120,7 @@ class JsonFile extends AbstractAdapter
     /**
      * Test if an item exists.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -132,8 +134,8 @@ class JsonFile extends AbstractAdapter
     /**
      * Store an item.
      *
-     * @param  string $cacheId
-     * @param  mixed  $value
+     * @param string $cacheId
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -152,7 +154,7 @@ class JsonFile extends AbstractAdapter
     /**
      * Remove an item.
      *
-     * @param  string $cacheId
+     * @param string $cacheId
      *
      * @return bool
      */
@@ -237,6 +239,6 @@ class JsonFile extends AbstractAdapter
      */
     private function keyPath($cacheId)
     {
-        return FileUtils::join(array($this->root, $cacheId . '.json'));
+        return FileUtils::join([$this->root, $cacheId . '.json']);
     }
 }
