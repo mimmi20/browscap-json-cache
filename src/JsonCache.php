@@ -65,6 +65,20 @@ class JsonCache implements BrowscapCacheInterface
     private $version = null;
 
     /**
+     * Release date of the Browscap data (read from INI file)
+     *
+     * @var string
+     */
+    private $releaseDate;
+
+    /**
+     * Type of the Browscap data (read from INI file)
+     *
+     * @var string
+     */
+    private $type;
+
+    /**
      * Constructor class, checks for the existence of (and loads) the cache and
      * if needed updated the definitions
      *
@@ -95,6 +109,46 @@ class JsonCache implements BrowscapCacheInterface
         }
 
         return $this->version;
+    }
+
+    /**
+     * Gets the release date of the Browscap data
+     *
+     * @return string
+     */
+    public function getReleaseDate()
+    {
+        if ($this->releaseDate === null) {
+            $success = true;
+
+            $releaseDate = $this->getItem('browscap.releaseDate', false, $success);
+
+            if ($releaseDate !== null && $success) {
+                $this->releaseDate = $releaseDate;
+            }
+        }
+
+        return $this->releaseDate;
+    }
+
+    /**
+     * Gets the type of the Browscap data
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        if ($this->type === null) {
+            $success = true;
+
+            $type = $this->getItem('browscap.type', false, $success);
+
+            if ($type !== null && $success) {
+                $this->type = $type;
+            }
+        }
+
+        return $this->type;
     }
 
     /**
