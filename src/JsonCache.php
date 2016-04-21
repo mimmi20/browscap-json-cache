@@ -169,7 +169,7 @@ class JsonCache implements BrowscapCacheInterface
         if (!$this->cache->hasItem($cacheId)) {
             $success = false;
 
-            return;
+            return null;
         }
 
         $success = null;
@@ -178,13 +178,13 @@ class JsonCache implements BrowscapCacheInterface
         if (!$success) {
             $success = false;
 
-            return;
+            return null;
         }
 
         if (!property_exists($data, 'content')) {
             $success = false;
 
-            return;
+            return null;
         }
 
         $success = true;

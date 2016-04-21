@@ -26,9 +26,9 @@
   },
   "require-dev": {
     "browscap/browscap-php": "dev-master",
-    "phpunit/phpunit": "~4.8|~5",
-    "squizlabs/php_codesniffer": "2.*",
-    "fabpot/php-cs-fixer": "~1.11"
+    "phpunit/phpunit": "^5.2",
+    "squizlabs/php_codesniffer": "^2.5",
+    "fabpot/php-cs-fixer": "^1.11"
   },
   "autoload": {
     "psr-4": {

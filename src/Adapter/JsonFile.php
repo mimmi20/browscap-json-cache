@@ -30,6 +30,7 @@
 
 namespace Browscap\Cache\Adapter;
 
+use Wurfl\WurflConstants;
 use WurflCache\Adapter\AbstractAdapter;
 use WurflCache\Adapter\Exception;
 use WurflCache\Utils\FileUtils;
@@ -48,12 +49,19 @@ use WurflCache\Utils\FileUtils;
 class JsonFile extends AbstractAdapter
 {
     /**
+     * @var string
+     */
+    const DIR = 'dir';
+
+    /**
      * @var array
      */
-    private $defaultParams = [
-        'dir'        => '/tmp',
-        'expiration' => 0,
-        'readonly'   => 'false',
+    protected $defaultParams = [
+        self::DIR          => '/tmp',
+        'namespace'        => 'browscap-json',
+        'cacheExpiration'  => 0,
+        'readonly'         => false,
+        'cacheVersion'     => WurflConstants::API_NAMESPACE,
     ];
 
     /**
@@ -65,11 +73,6 @@ class JsonFile extends AbstractAdapter
      * @var bool
      */
     private $readonly = false;
-
-    /**
-     * @var string
-     */
-    const DIR = 'dir';
 
     /**
      * @param $params
@@ -101,15 +104,15 @@ class JsonFile extends AbstractAdapter
         $success = false;
 
         if (!$this->hasItem($cacheId)) {
-            return;
+            return null;
         }
 
         $path = $this->keyPath($cacheId);
 
-        /** @var $value \WurflCache\Adapter\Helper\StorageObject */
+        /** @var $value mixed */
         $value = json_decode(FileUtils::read($path));
         if ($value === null) {
-            return;
+            return null;
         }
 
         $success = true;
@@ -181,7 +184,7 @@ class JsonFile extends AbstractAdapter
     private function initialize($params)
     {
         $this->root            = $params[self::DIR];
-        $this->cacheExpiration = $params['expiration'];
+        $this->cacheExpiration = $params['cacheExpiration'];
         $this->readonly        = ($params['readonly'] === 'true' || $params['readonly'] === true);
 
         $this->createRootDirIfNotExist();
