@@ -1,5 +1,15 @@
 <?php
 /**
+ * This file is part of the browscap-json-cache package.
+ *
+ * (c) Thomas Mueller <mimmi20@live.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types = 1);
+/**
  * Copyright (c) 2013-2014 Thomas Müller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -27,7 +37,6 @@
  *
  * @link       https://github.com/mimmi20/WurflCache/
  */
-
 namespace Browscap\Cache\Adapter;
 
 use Wurfl\WurflConstants;
@@ -51,7 +60,7 @@ class JsonFile extends AbstractAdapter
     /**
      * @var string
      */
-    const DIR = 'dir';
+    public const DIR = 'dir';
 
     /**
      * @var array
@@ -75,25 +84,6 @@ class JsonFile extends AbstractAdapter
     private $readonly = false;
 
     /**
-     * @param $params
-     *
-     * @throws \WurflCache\Adapter\Exception
-     */
-    public function __construct($params)
-    {
-        $currentParams = $this->defaultParams;
-
-        if (is_array($params) && !empty($params)) {
-            $currentParams = array_merge(
-                $currentParams,
-                $params
-            );
-        }
-
-        $this->initialize($currentParams);
-    }
-
-    /**
      * Get an item.
      *
      * @param string $cacheId
@@ -101,7 +91,7 @@ class JsonFile extends AbstractAdapter
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($cacheId, & $success = null)
+    public function getItem($cacheId, &$success = null)
     {
         $success = false;
 
@@ -111,9 +101,9 @@ class JsonFile extends AbstractAdapter
 
         $path = $this->keyPath($cacheId);
 
-        /** @var $value mixed */
+        /** @var mixed $value */
         $value = json_decode(FileUtils::read($path));
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 
@@ -129,7 +119,7 @@ class JsonFile extends AbstractAdapter
      *
      * @return bool
      */
-    public function hasItem($cacheId)
+    public function hasItem($cacheId): bool
     {
         $path = $this->keyPath($cacheId);
 
@@ -144,10 +134,8 @@ class JsonFile extends AbstractAdapter
      *
      * @return bool
      */
-    public function setItem(
-        $cacheId,
-        $value
-    ) {
+    public function setItem($cacheId, $value): bool
+    {
         $path = $this->keyPath($cacheId);
 
         return FileUtils::write(
@@ -163,7 +151,7 @@ class JsonFile extends AbstractAdapter
      *
      * @return bool
      */
-    public function removeItem($cacheId)
+    public function removeItem($cacheId): bool
     {
         $path = $this->keyPath($cacheId);
 
@@ -175,29 +163,45 @@ class JsonFile extends AbstractAdapter
      *
      * @return bool
      */
-    public function flush()
+    public function flush(): bool
     {
         return FileUtils::rmdir($this->root);
     }
 
     /**
-     * @param $params
+     * @param array $params
      *
      * @throws \WurflCache\Adapter\Exception
+     *
+     * @return void
      */
-    private function initialize($params)
+    protected function toFields(array $params): void
     {
+        if (isset($params['namespace'])) {
+            $this->setNamespace($params['namespace']);
+        }
+
+        if (isset($params['cacheExpiration'])) {
+            $this->setExpiration($params['cacheExpiration']);
+        }
+
+        if (isset($params['cacheVersion'])) {
+            $this->setCacheVersion($params['cacheVersion']);
+        }
+
         $this->root            = $params[self::DIR];
         $this->cacheExpiration = $params['cacheExpiration'];
-        $this->readonly        = ($params['readonly'] === 'true' || $params['readonly'] === true);
+        $this->readonly        = ('true' === $params['readonly'] || true === $params['readonly']);
 
         $this->createRootDirIfNotExist();
     }
 
     /**
      * @throws \WurflCache\Adapter\Exception
+     *
+     * @return void
      */
-    private function createRootDirIfNotExist()
+    private function createRootDirIfNotExist(): void
     {
         if (!isset($this->root)) {
             throw new Exception(
@@ -240,11 +244,11 @@ class JsonFile extends AbstractAdapter
     }
 
     /**
-     * @param $cacheId
+     * @param string $cacheId
      *
      * @return string
      */
-    private function keyPath($cacheId)
+    private function keyPath(string $cacheId): string
     {
         return FileUtils::join([$this->root, $cacheId . '.json']);
     }

@@ -1,5 +1,15 @@
 <?php
 /**
+ * This file is part of the browscap-json-cache package.
+ *
+ * (c) Thomas Mueller <mimmi20@live.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types = 1);
+/**
  * Copyright (c) 1998-2014 Browser Capabilities Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -28,7 +38,6 @@
  * @link       https://github.com/browscap/browscap-php/
  * @since      added with version 3.0
  */
-
 namespace Browscap\Cache;
 
 use BrowscapPHP\Cache\BrowscapCacheInterface;
@@ -55,14 +64,14 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @var \WurflCache\Adapter\AdapterInterface
      */
-    private $cache = null;
+    private $cache;
 
     /**
      * Detected browscap version (read from INI file)
      *
      * @var int
      */
-    private $version = null;
+    private $version;
 
     /**
      * Release date of the Browscap data (read from INI file)
@@ -88,7 +97,7 @@ class JsonCache implements BrowscapCacheInterface
     public function __construct(AdapterInterface $adapter, $updateInterval = BrowscapCacheInterface::CACHE_LIVETIME)
     {
         $this->cache = $adapter;
-        $this->cache->setExpiration((int) $updateInterval);
+        $this->cache->setExpiration($updateInterval);
     }
 
     /**
@@ -96,14 +105,14 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return int
      */
-    public function getVersion()
+    public function getVersion(): int
     {
-        if ($this->version === null) {
+        if (null === $this->version) {
             $success = true;
 
             $version = $this->getItem('browscap.version', false, $success);
 
-            if ($version !== null && $success) {
+            if (null !== $version && $success) {
                 $this->version = (int) $version;
             }
         }
@@ -116,14 +125,14 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return string
      */
-    public function getReleaseDate()
+    public function getReleaseDate(): string
     {
-        if ($this->releaseDate === null) {
+        if (null === $this->releaseDate) {
             $success = true;
 
             $releaseDate = $this->getItem('browscap.releaseDate', false, $success);
 
-            if ($releaseDate !== null && $success) {
+            if (null !== $releaseDate && $success) {
                 $this->releaseDate = $releaseDate;
             }
         }
@@ -136,14 +145,14 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
-        if ($this->type === null) {
+        if (null === $this->type) {
             $success = true;
 
             $type = $this->getItem('browscap.type', false, $success);
 
-            if ($type !== null && $success) {
+            if (null !== $type && $success) {
                 $this->type = $type;
             }
         }
@@ -160,7 +169,7 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($cacheId, $withVersion = true, & $success = null)
+    public function getItem($cacheId, $withVersion = true, &$success = null)
     {
         if ($withVersion) {
             $cacheId .= '.' . $this->getVersion();
@@ -201,7 +210,7 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return bool whether the file was correctly written to the disk
      */
-    public function setItem($cacheId, $content, $withVersion = true)
+    public function setItem($cacheId, $content, $withVersion = true): bool
     {
         $data = new \StdClass();
         // Get the whole PHP code
@@ -223,7 +232,7 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return bool
      */
-    public function hasItem($cacheId, $withVersion = true)
+    public function hasItem($cacheId, $withVersion = true): bool
     {
         if ($withVersion) {
             $cacheId .= '.' . $this->getVersion();
@@ -240,7 +249,7 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return bool
      */
-    public function removeItem($cacheId, $withVersion = true)
+    public function removeItem($cacheId, $withVersion = true): bool
     {
         if ($withVersion) {
             $cacheId .= '.' . $this->getVersion();
@@ -254,7 +263,7 @@ class JsonCache implements BrowscapCacheInterface
      *
      * @return bool
      */
-    public function flush()
+    public function flush(): bool
     {
         return $this->cache->flush();
     }
