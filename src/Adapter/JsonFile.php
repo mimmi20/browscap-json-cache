@@ -76,6 +76,8 @@ class JsonFile extends AbstractAdapter
 
     /**
      * @param $params
+     *
+     * @throws \WurflCache\Adapter\Exception
      */
     public function __construct($params)
     {
@@ -150,7 +152,7 @@ class JsonFile extends AbstractAdapter
 
         return FileUtils::write(
             $path,
-            json_encode($value, JSON_PRETTY_PRINT)
+            json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL
         );
     }
 
@@ -180,6 +182,8 @@ class JsonFile extends AbstractAdapter
 
     /**
      * @param $params
+     *
+     * @throws \WurflCache\Adapter\Exception
      */
     private function initialize($params)
     {
