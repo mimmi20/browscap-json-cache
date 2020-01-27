@@ -2,7 +2,9 @@
   "name": "mimmi20/browscap-json-cache",
   "type": "application",
   "description": "Browser Capabilities Json Cache",
-  "keywords": ["browscap"],
+  "keywords": [
+    "browscap"
+  ],
   "homepage": "https://github.com/mimmi20/browscap-json-cache",
   "license": "MIT",
   "authors": [
@@ -16,19 +18,16 @@
       "homepage": "https://github.com/mimmi20/browscap-json-cache/graphs/contributors"
     }
   ],
-  "support": {
-    "issues": "https://github.com/mimmi20/browscap-json-cache/issues",
-    "source": "https://github.com/mimmi20/browscap-json-cache"
-  },
   "require": {
     "php": "^7.1",
-    "mimmi20/wurflcache": "^1.7"
+    "mimmi20/wurflcache": "^1.7.1.1"
   },
   "require-dev": {
-    "browscap/browscap-php": "^3.1",
-    "squizlabs/php_codesniffer": "^3.2",
-    "friendsofphp/php-cs-fixer": "^2.9",
-    "phpstan/phpstan": "^0.9"
+    "browscap/browscap-php": "^3.1.0",
+    "ergebnis/composer-normalize": "^2.2.2",
+    "friendsofphp/php-cs-fixer": "^2.16.1",
+    "phpstan/phpstan": "^0.12.8",
+    "squizlabs/php_codesniffer": "^3.5.3"
   },
   "autoload": {
     "psr-4": {
@@ -39,5 +38,9 @@
     "psr-4": {
       "BrowscapTest\\Cache\\": "tests/"
     }
+  },
+  "support": {
+    "issues": "https://github.com/mimmi20/browscap-json-cache/issues",
+    "source": "https://github.com/mimmi20/browscap-json-cache"
   }
 }

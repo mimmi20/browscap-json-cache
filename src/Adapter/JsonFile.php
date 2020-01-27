@@ -35,7 +35,7 @@ declare(strict_types = 1);
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
  *
- * @link       https://github.com/mimmi20/WurflCache/
+ * @see       https://github.com/mimmi20/WurflCache/
  */
 namespace Browscap\Cache\Adapter;
 
@@ -49,13 +49,12 @@ use WurflCache\Utils\FileUtils;
  *
  * @category   WurflCache
  *
- * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  2013-2014 Thomas Müller
  * @license    http://www.opensource.org/licenses/MIT MIT License
  *
- * @link       https://github.com/mimmi20/WurflCache/
+ * @see       https://github.com/mimmi20/WurflCache/
  */
-class JsonFile extends AbstractAdapter
+final class JsonFile extends AbstractAdapter
 {
     /**
      * @var string
@@ -66,11 +65,11 @@ class JsonFile extends AbstractAdapter
      * @var array
      */
     protected $defaultParams = [
-        self::DIR          => '/tmp',
-        'namespace'        => 'browscap-json',
-        'cacheExpiration'  => 0,
-        'readonly'         => false,
-        'cacheVersion'     => WurflConstants::API_NAMESPACE,
+        self::DIR => '/tmp',
+        'namespace' => 'browscap-json',
+        'cacheExpiration' => 0,
+        'readonly' => false,
+        'cacheVersion' => WurflConstants::API_NAMESPACE,
     ];
 
     /**
