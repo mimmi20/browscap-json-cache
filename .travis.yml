@@ -1,11 +1,11 @@
 language: php
 sudo: false
-dist: trusty
 
 php:
   - 7.1
   - 7.2
-  - nightly
+  - 7.3
+  - 7.4
 
 os: linux
 
@@ -42,8 +42,9 @@ jobs:
 
     - stage: composer validate
       php: 7.1
-      install: skip
-      script: composer validate
+      script:
+        - composer validate
+        - composer normalize --dry-run
 
     - stage: check coding style
       php: 7.1
@@ -58,7 +59,7 @@ jobs:
     - stage: static code analysis
       php: 7.1
       env: TEST=phpstan
-      script: vendor/bin/phpstan analyse -l 7 -c phpstan.neon --autoload-file=vendor/autoload.php --memory-limit=768M --no-progress src
+      script: vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=768M --no-progress
 
 notifications:
   email: false

@@ -35,7 +35,7 @@ declare(strict_types = 1);
  * @copyright  1998-2014 Browser Capabilities Project
  * @license    http://www.opensource.org/licenses/MIT MIT License
  *
- * @link       https://github.com/browscap/browscap-php/
+ * @see       https://github.com/browscap/browscap-php/
  * @since      added with version 3.0
  */
 namespace Browscap\Cache;
@@ -48,16 +48,15 @@ use WurflCache\Adapter\AdapterInterface;
  *
  * @category   Browscap-PHP
  *
- * @author     Thomas Müller <t_mueller_stolzenhain@yahoo.de>
  * @copyright  Copyright (c) 1998-2014 Browser Capabilities Project
  *
  * @version    3.0
  *
  * @license    http://www.opensource.org/licenses/MIT MIT License
  *
- * @link       https://github.com/browscap/browscap-php/
+ * @see       https://github.com/browscap/browscap-php/
  */
-class JsonCache implements BrowscapCacheInterface
+final class JsonCache implements BrowscapCacheInterface
 {
     /**
      * Path to the cache directory
