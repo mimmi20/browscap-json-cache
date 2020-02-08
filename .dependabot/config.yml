@@ -17,3 +17,5 @@ update_configs:
     ignored_updates:
       - match:
           dependency_name: "symfony/console"
+      - match:
+          dependency_name: "browscap/browscap-php"
