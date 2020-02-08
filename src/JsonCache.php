@@ -9,35 +9,6 @@
  */
 
 declare(strict_types = 1);
-/**
- * Copyright (c) 1998-2014 Browser Capabilities Project
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @category   Browscap-PHP
- *
- * @copyright  1998-2014 Browser Capabilities Project
- * @license    http://www.opensource.org/licenses/MIT MIT License
- *
- * @see       https://github.com/browscap/browscap-php/
- * @since      added with version 3.0
- */
 namespace Browscap\Cache;
 
 use BrowscapPHP\Cache\BrowscapCacheInterface;
@@ -58,6 +29,13 @@ use WurflCache\Adapter\AdapterInterface;
  */
 final class JsonCache implements BrowscapCacheInterface
 {
+    /**
+     * The cache livetime in seconds.
+     *
+     * @var int
+     */
+    public const CACHE_LIVETIME = 315360000; // ~10 years (60 * 60 * 24 * 365 * 10)
+
     /**
      * Path to the cache directory
      *
@@ -93,7 +71,7 @@ final class JsonCache implements BrowscapCacheInterface
      * @param \WurflCache\Adapter\AdapterInterface $adapter
      * @param int                                  $updateInterval
      */
-    public function __construct(AdapterInterface $adapter, $updateInterval = BrowscapCacheInterface::CACHE_LIVETIME)
+    public function __construct(AdapterInterface $adapter, $updateInterval = self::CACHE_LIVETIME)
     {
         $this->cache = $adapter;
         $this->cache->setExpiration($updateInterval);
@@ -102,9 +80,9 @@ final class JsonCache implements BrowscapCacheInterface
     /**
      * Gets the version of the Browscap data
      *
-     * @return int
+     * @return int|null
      */
-    public function getVersion(): int
+    public function getVersion(): ?int
     {
         if (null === $this->version) {
             $success = true;
@@ -142,9 +120,9 @@ final class JsonCache implements BrowscapCacheInterface
     /**
      * Gets the type of the Browscap data
      *
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         if (null === $this->type) {
             $success = true;
@@ -162,13 +140,13 @@ final class JsonCache implements BrowscapCacheInterface
     /**
      * Get an item.
      *
-     * @param string $cacheId
-     * @param bool   $withVersion
-     * @param bool   $success
+     * @param string    $cacheId
+     * @param bool      $withVersion
+     * @param bool|null $success
      *
      * @return mixed Data on success, null on failure
      */
-    public function getItem($cacheId, $withVersion = true, &$success = null)
+    public function getItem(string $cacheId, bool $withVersion = true, ?bool &$success = null)
     {
         if ($withVersion) {
             $cacheId .= '.' . $this->getVersion();
@@ -209,9 +187,9 @@ final class JsonCache implements BrowscapCacheInterface
      *
      * @return bool whether the file was correctly written to the disk
      */
-    public function setItem($cacheId, $content, $withVersion = true): bool
+    public function setItem(string $cacheId, $content, bool $withVersion = true): bool
     {
-        $data = new \StdClass();
+        $data = new \stdClass();
         // Get the whole PHP code
         $data->content = $content;
 
@@ -231,7 +209,7 @@ final class JsonCache implements BrowscapCacheInterface
      *
      * @return bool
      */
-    public function hasItem($cacheId, $withVersion = true): bool
+    public function hasItem(string $cacheId, bool $withVersion = true): bool
     {
         if ($withVersion) {
             $cacheId .= '.' . $this->getVersion();
@@ -248,7 +226,7 @@ final class JsonCache implements BrowscapCacheInterface
      *
      * @return bool
      */
-    public function removeItem($cacheId, $withVersion = true): bool
+    public function removeItem(string $cacheId, bool $withVersion = true): bool
     {
         if ($withVersion) {
             $cacheId .= '.' . $this->getVersion();

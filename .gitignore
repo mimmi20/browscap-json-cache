@@ -12,3 +12,5 @@ ergebnis.txt
 tests/data/*
 !tests/data/.gitkeep
 .php_cs.cache
+.phplint-cache
+.phpunit.result.cache
